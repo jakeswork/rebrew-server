@@ -1,0 +1,27 @@
+{
+  "name": "rebrew-server",
+  "scripts": {
+    "start": "ts-node-dev -r dotenv/config --no-notify --respawn --transpileOnly ./src",
+    "postinstall": "prisma2 generate",
+    "lint": "eslint /src --quiet && echo '✔ All good!'"
+  },
+  "dependencies": {
+    "@prisma/nexus": "^0.0.1",
+    "@types/bcrypt": "^3.0.0",
+    "@types/dotenv": "^6.1.1",
+    "@types/jsonwebtoken": "^8.3.3",
+    "bcrypt": "^3.0.6",
+    "dotenv": "^8.0.0",
+    "graphql-shield": "^6.0.4",
+    "graphql-yoga": "1.17.4",
+    "jsonwebtoken": "^8.5.1",
+    "nexus": "0.11.7"
+  },
+  "devDependencies": {
+    "@types/node": "10.14.9",
+    "prettier": "1.18.2",
+    "ts-node": "^8.3.0",
+    "ts-node-dev": "1.0.0-pre.40",
+    "typescript": "3.5.2"
+  }
+}

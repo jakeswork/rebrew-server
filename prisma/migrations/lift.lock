@@ -1,0 +1,8 @@
+# IF THERE'S A GIT CONFLICT IN THIS FILE, DON'T SOLVE IT MANUALLY!
+# INSTEAD EXECUTE `prisma lift fix`
+# lift lockfile v1
+# Read more about conflict resolution here: TODO
+
+20190812112055-init
+20190812120039-added-password--deleted-posts
+20190812160103-rename-user-model
