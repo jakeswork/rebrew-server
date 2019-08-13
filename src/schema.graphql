@@ -2,9 +2,70 @@
 ### Do not make changes to this file directly
 
 
+type Amount {
+  unit: String!
+  value: Float!
+}
+
 type AuthPayload {
   token: String!
   user: User!
+}
+
+type Beer {
+  abv: Float!
+  boilVolume: Amount!
+  brewersTips: String!
+  contributedBy: String!
+  description: String!
+  ebc: Int
+  firstBrewed: String!
+  foodPairing: [String!]!
+  ibu: Float
+  id: Int!
+  imageUrl: String!
+  ingredients: Recipie!
+  method: Method!
+  name: String!
+  ph: Float
+  tagline: String!
+  volume: Amount!
+}
+
+type BeerFermentation implements BeerTemp {
+  temp: Amount!
+}
+
+type BeerMashTemp implements BeerTemp {
+  duration: Int
+  temp: Amount!
+}
+
+interface BeerTemp {
+  temp: Amount!
+}
+
+type HopsIngredient implements Ingredient {
+  add: String!
+  amount: Amount!
+  attribute: String!
+  name: String!
+}
+
+interface Ingredient {
+  amount: Amount!
+  name: String!
+}
+
+type MaltIngredient implements Ingredient {
+  amount: Amount!
+  name: String!
+}
+
+type Method {
+  fermentation: BeerFermentation!
+  mashTemp: [BeerMashTemp!]!
+  twist: String
 }
 
 type Mutation {
@@ -13,10 +74,18 @@ type Mutation {
 }
 
 type Query {
+  beer(id: Int!): Beer!
+  beers(name: String): [Beer!]!
   user(id: String, userName: String): User!
 
   """The currently authenticated user"""
   viewer: User!
+}
+
+type Recipie {
+  hops: [HopsIngredient!]!
+  malt: [MaltIngredient!]!
+  yeast: String!
 }
 
 """

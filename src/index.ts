@@ -8,12 +8,13 @@ import { ContextParameters } from "graphql-yoga/dist/types";
 
 import { Context } from "./types";
 import { NexusObjectTypeDef } from "nexus/dist/core";
+import { Beer } from "./models/Beer";
 
-const resolversDir: string = join(__dirname, "resolvers");
+const typesDir: string = join(__dirname, "types");
 
-const types: NexusObjectTypeDef<string>[] = readdirSync(resolversDir).map(
+const types: NexusObjectTypeDef<string>[] = readdirSync(typesDir).map(
   (fileName: string): NexusObjectTypeDef<string> =>
-    require(join(resolversDir, fileName)).default
+    require(join(typesDir, fileName)).default
 );
 
 const nexusPrisma = nexusPrismaPlugin({
@@ -45,7 +46,8 @@ const server = new GraphQLServer({
   schema,
   context: (req: ContextParameters): Context => ({
     ...req,
-    photon: new Photon()
+    photon: new Photon(),
+    beer: Beer
   })
 });
 

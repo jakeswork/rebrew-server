@@ -1,4 +1,4 @@
-import { queryType, stringArg } from "nexus";
+import { queryType, stringArg, intArg } from "nexus";
 
 import { getUserId } from "../utils";
 
@@ -31,6 +31,34 @@ const Query = queryType({
             userName
           }
         });
+      }
+    });
+
+    t.field("beer", {
+      type: "Beer",
+      args: {
+        id: intArg({
+          required: true
+        })
+      },
+      resolve: (_, { id }, ctx) => {
+        if (!id) throw new Error("Provide an id to search for.");
+
+        return ctx.beer.findBeerById(id);
+      }
+    });
+
+    t.list.field("beers", {
+      type: "Beer",
+      args: {
+        name: stringArg({
+          nullable: true
+        })
+      },
+      resolve: (_, { name }, ctx) => {
+        if (name) return ctx.beer.findBeersByName(name);
+
+        return ctx.beer.findBeers();
       }
     });
   }
