@@ -7,9 +7,9 @@ const Beer = objectType({
     t.int("id");
     t.string("name");
     t.string("tagline");
-    t.string("firstBrewed");
+    t.string("first_brewed");
     t.string("description");
-    t.string("imageUrl");
+    t.string("image_url");
     t.float("abv");
     t.float("ibu", {
       nullable: true
@@ -23,15 +23,15 @@ const Beer = objectType({
     t.field("volume", {
       type: "Amount"
     });
-    t.field("boilVolume", {
+    t.field("boil_volume", {
       type: "Amount"
     });
     t.field("ingredients", {
       type: "Recipie"
     });
-    t.list.string("foodPairing");
-    t.string("brewersTips");
-    t.string("contributedBy");
+    t.list.string("food_pairing");
+    t.string("brewers_tips");
+    t.string("contributed_by");
     t.field("method", {
       type: "Method"
     });
@@ -41,24 +41,24 @@ const Beer = objectType({
       resolve: async (beer, _, ctx): Promise<Review[] | null> => {
         const reviews = await ctx.photon.reviews.findMany({
           where: {
-            beerId: beer.id
+            beer_id: beer.id
           }
         });
 
         return reviews ? reviews : null;
       }
     });
-    t.field("averageRating", {
+    t.field("average_rating", {
       nullable: true,
       type: "Float",
       resolve: async (beer, _, ctx): Promise<number> => {
         const reviews = await ctx.photon.reviews.findMany({
           where: {
-            beerId: beer.id
+            beer_id: beer.id
           }
         });
         const total: number = reviews.reduce(
-          (acc: number, curr) => acc + curr.rating,
+          (acc: number, curr: Review) => acc + curr.rating,
           0
         );
 

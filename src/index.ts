@@ -47,7 +47,7 @@ const server = new GraphQLServer({
   context: (req: ContextParameters): Context => ({
     ...req,
     photon: new Photon(),
-    beer: Beer
+    beer: new Beer()
   })
 });
 

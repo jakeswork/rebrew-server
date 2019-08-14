@@ -1,20 +1,39 @@
-import { Amount, Recipie, BeerTemp } from "../types";
+export interface Amount {
+  value: number;
+  unit: string;
+}
 
-export interface BeerMethodMashTemp {
+export interface BeerTemp {
   temp: Amount;
+}
+
+export interface BeerMashTemp extends BeerTemp {
   duration: number;
 }
 
-export interface BeerMethod {
+export interface BeerResponseMethod {
   fermentation: BeerTemp;
   twist: string;
-  mashTemp: BeerMethodMashTemp[];
+  mash_temp: BeerMashTemp[];
+}
+
+export interface Ingredient {
+  name: string;
+  amount: Amount;
+}
+
+export interface HopsIngredient extends Ingredient {
+  add: string;
+  attribute: string;
+}
+
+export interface Recipie {
+  malt: Ingredient[];
+  hops: HopsIngredient[];
+  yeast: string;
 }
 
 export interface Beer {
-  findBeerById: Function;
-  findBeersByName: Function;
-  findBeers: Function;
   id: number;
   name: string;
   tagline: string;
@@ -24,11 +43,11 @@ export interface Beer {
   ebc: number;
   volume: Amount;
   ingredients: Recipie;
-  firstBrewed: string;
-  imageUrl: string;
-  boilVolume: Amount;
-  foodPairing: string[];
-  brewersTips: string;
-  contributedBy: string;
-  method: BeerMethod;
+  first_brewed: string;
+  image_url: string;
+  boil_volume: Amount;
+  food_pairing: string[];
+  brewers_tips: string;
+  contributed_by: string;
+  method: BeerResponseMethod;
 }

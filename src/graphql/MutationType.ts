@@ -11,15 +11,15 @@ const Mutation = mutationType({
     t.field("signup", {
       type: "AuthPayload",
       args: {
-        displayName: stringArg({ nullable: true }),
-        userName: stringArg(),
+        display_name: stringArg({ nullable: true }),
+        user_name: stringArg(),
         password: stringArg()
       },
-      resolve: async (_, { displayName, userName, password }, ctx) => {
-        const trimmed = userName.replace(/\s/g, "");
+      resolve: async (_, { display_name, user_name, password }, ctx) => {
+        const trimmed = user_name.replace(/\s/g, "");
         const userNameExists = await ctx.photon.users
           .findOne({
-            where: { userName: trimmed }
+            where: { user_name: trimmed }
           })
           .catch(notExistError);
 
@@ -34,8 +34,8 @@ const Mutation = mutationType({
         const hashedPassword = await hash(password, 10);
         const user = await ctx.photon.users.create({
           data: {
-            displayName,
-            userName: trimmed,
+            display_name,
+            user_name: trimmed,
             password: hashedPassword
           }
         });
@@ -50,15 +50,15 @@ const Mutation = mutationType({
     t.field("login", {
       type: "AuthPayload",
       args: {
-        userName: stringArg(),
+        user_name: stringArg(),
         password: stringArg()
       },
-      resolve: async (_, { userName, password }, ctx) => {
+      resolve: async (_, { user_name, password }, ctx) => {
         const user = await ctx.photon.users.findOne({
-          where: { userName }
+          where: { user_name }
         });
 
-        if (!user) throw new Error(`No user found for user name ${userName}`);
+        if (!user) throw new Error(`No user found for user name ${user_name}`);
 
         const passwordValid = await compare(password, user.password);
 
@@ -71,24 +71,24 @@ const Mutation = mutationType({
       }
     });
 
-    t.field("createReview", {
+    t.field("create_review", {
       type: "Review",
       args: {
-        beerId: intArg({ required: true }),
+        beer_id: intArg({ required: true }),
         comment: stringArg({ required: true }),
         rating: floatArg({ required: true })
       },
-      resolve: async (_, { beerId, comment, rating }, ctx) => {
+      resolve: async (_, { beer_id, comment, rating }, ctx) => {
         if (rating < 0 || rating > 5)
           throw new Error("Ratings must be between 1-5");
 
-        const userId: string = getUserId(ctx);
+        const user_id: string = getUserId(ctx);
         const review = await ctx.photon.reviews.create({
           data: {
-            beerId,
+            beer_id,
             comment,
             rating,
-            userId
+            user_id
           }
         });
 

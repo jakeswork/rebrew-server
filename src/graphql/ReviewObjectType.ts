@@ -11,13 +11,13 @@ const Review = objectType({
       resolve: (review, _, ctx): Promise<User> =>
         ctx.photon.users.findOne({
           where: {
-            id: review.userId
+            id: review.user_id
           }
         })
     });
     t.field("beer", {
       type: "Beer",
-      resolve: (review, _, ctx) => ctx.beer.findBeerById(review.beerId)
+      resolve: (review, _, ctx) => ctx.beer.findBeerById(review.beer_id)
     });
     t.model.rating();
     t.model.comment();

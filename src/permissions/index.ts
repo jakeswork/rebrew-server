@@ -4,9 +4,9 @@ import { getUserId } from "../utils";
 
 export const rules = {
   isAuthenticatedUser: rule()((a, b, ctx) => {
-    const userId: string = getUserId(ctx);
+    const user_id: string = getUserId(ctx);
 
-    return Boolean(userId);
+    return Boolean(user_id);
   })
 };
 
@@ -15,6 +15,6 @@ export const permissions = shield({
     viewer: rules.isAuthenticatedUser
   },
   Mutation: {
-    createReview: rules.isAuthenticatedUser
+    create_review: rules.isAuthenticatedUser
   }
 });

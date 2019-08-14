@@ -14,17 +14,17 @@ type AuthPayload {
 
 type Beer {
   abv: Float!
-  averageRating: Float
-  boilVolume: Amount!
-  brewersTips: String!
-  contributedBy: String!
+  average_rating: Float
+  boil_volume: Amount!
+  brewers_tips: String!
+  contributed_by: String!
   description: String!
   ebc: Int
-  firstBrewed: String!
-  foodPairing: [String!]!
+  first_brewed: String!
+  food_pairing: [String!]!
   ibu: Float
   id: Int!
-  imageUrl: String!
+  image_url: String!
   ingredients: Recipie!
   method: Method!
   name: String!
@@ -43,16 +43,8 @@ type BeerMashTemp implements BeerTemp {
   temp: Amount!
 }
 
-input BeersWhereInput {
-  name: String
-}
-
 interface BeerTemp {
   temp: Amount!
-}
-
-input BeerWhereInput {
-  id: Int
 }
 
 type HopsIngredient implements Ingredient {
@@ -74,20 +66,20 @@ type MaltIngredient implements Ingredient {
 
 type Method {
   fermentation: BeerFermentation!
-  mashTemp: [BeerMashTemp!]!
+  mash_temp: [BeerMashTemp!]!
   twist: String
 }
 
 type Mutation {
-  createReview(beerId: Int!, comment: String!, rating: Float!): Review!
-  login(password: String, userName: String): AuthPayload!
-  signup(displayName: String, password: String, userName: String): AuthPayload!
+  create_review(beer_id: Int!, comment: String!, rating: Float!): Review!
+  login(password: String, user_name: String): AuthPayload!
+  signup(display_name: String, password: String, user_name: String): AuthPayload!
 }
 
 type Query {
-  beer(where: BeerWhereInput!): Beer!
-  beers(where: BeersWhereInput): [Beer!]!
-  user(where: UserWhereInput!): User!
+  beer(id: Int!): Beer!
+  beers(name: String): [Beer!]!
+  user(id: ID, user_name: String): User!
 
   """The currently authenticated user"""
   viewer: User!
@@ -112,13 +104,8 @@ type Review {
 A user is an individual's account on Rebrew that owns reviews and can make new reviews.
 """
 type User {
-  displayName: String
+  display_name: String
   id: ID!
-  reviewsMade: [Review!]
-  userName: String!
-}
-
-input UserWhereInput {
-  id: ID
-  userName: String
+  reviews_made: [Review!]
+  user_name: String!
 }
