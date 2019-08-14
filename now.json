@@ -1,10 +1,16 @@
 {
   "version": 2,
+  "name": "rebrew-server",
   "builds": [{
-    "src": "dist/src/index.js",
+    "src": "dist/**/*.js",
     "use": "@now/node@canary",
     "config": {
+      "includeFiles": [],
       "maxLambdaSize": "25mb"
     }
+  }],
+  "routes": [{
+    "src": "/",
+    "dest": "dist/src/"
   }]
 }

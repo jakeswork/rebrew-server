@@ -1,11 +1,15 @@
 {
   "name": "rebrew-server",
+  "main": "dist/src",
   "scripts": {
     "start": "ts-node-dev -r dotenv/config --no-notify --respawn --transpileOnly ./src",
     "build": "prisma2 generate && tsc",
-    "postinstall": "prisma2 generate",
+    "postinstall": "prisma2 generate && tsc",
     "lint": "eslint /src --quiet && echo '✔ All good!'",
-    "deploy": "prisma2 generate && tsc && now"
+    "deploy": "now"
+  },
+  "engines": {
+    "node": "10.x"
   },
   "dependencies": {
     "@prisma/nexus": "^0.0.1",
@@ -18,7 +22,8 @@
     "graphql-shield": "^6.0.4",
     "graphql-yoga": "1.17.4",
     "jsonwebtoken": "^8.5.1",
-    "nexus": "0.11.7"
+    "nexus": "0.11.7",
+    "prisma2": "^2.0.0-preview-6.1"
   },
   "devDependencies": {
     "@types/node": "10.14.9",
