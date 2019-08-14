@@ -5,16 +5,16 @@ import Photon from "@generated/photon";
 import { makeSchema } from "@prisma/nexus";
 import { GraphQLServer } from "graphql-yoga";
 import { ContextParameters } from "graphql-yoga/dist/types";
+import { NexusObjectTypeDef } from "nexus/dist/core";
 
 import { Context } from "./types";
-import { NexusObjectTypeDef } from "nexus/dist/core";
 import { Beer } from "./models/Beer";
 
-const typesDir: string = join(__dirname, "types");
+const graphqlDir: string = join(__dirname, "graphql");
 
-const types: NexusObjectTypeDef<string>[] = readdirSync(typesDir).map(
+const types: NexusObjectTypeDef<string>[] = readdirSync(graphqlDir).map(
   (fileName: string): NexusObjectTypeDef<string> =>
-    require(join(typesDir, fileName)).default
+    require(join(graphqlDir, fileName)).default
 );
 
 const nexusPrisma = nexusPrismaPlugin({

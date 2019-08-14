@@ -14,6 +14,7 @@ type AuthPayload {
 
 type Beer {
   abv: Float!
+  averageRating: Float
   boilVolume: Amount!
   brewersTips: String!
   contributedBy: String!
@@ -28,6 +29,7 @@ type Beer {
   method: Method!
   name: String!
   ph: Float
+  reviews: [Review!]
   tagline: String!
   volume: Amount!
 }
@@ -41,8 +43,16 @@ type BeerMashTemp implements BeerTemp {
   temp: Amount!
 }
 
+input BeersWhereInput {
+  name: String
+}
+
 interface BeerTemp {
   temp: Amount!
+}
+
+input BeerWhereInput {
+  id: Int
 }
 
 type HopsIngredient implements Ingredient {
@@ -69,14 +79,15 @@ type Method {
 }
 
 type Mutation {
+  createReview(beerId: Int!, comment: String!, rating: Float!): Review!
   login(password: String, userName: String): AuthPayload!
   signup(displayName: String, password: String, userName: String): AuthPayload!
 }
 
 type Query {
-  beer(id: Int!): Beer!
-  beers(name: String): [Beer!]!
-  user(id: String, userName: String): User!
+  beer(where: BeerWhereInput!): Beer!
+  beers(where: BeersWhereInput): [Beer!]!
+  user(where: UserWhereInput!): User!
 
   """The currently authenticated user"""
   viewer: User!
@@ -88,11 +99,26 @@ type Recipie {
   yeast: String!
 }
 
+"""A Review is a response to a Beer."""
+type Review {
+  beer: Beer!
+  comment: String!
+  id: ID!
+  rating: Float!
+  user: User!
+}
+
 """
 A user is an individual's account on Rebrew that owns reviews and can make new reviews.
 """
 type User {
   displayName: String
   id: ID!
+  reviewsMade: [Review!]
   userName: String!
+}
+
+input UserWhereInput {
+  id: ID
+  userName: String
 }

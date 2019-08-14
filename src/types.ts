@@ -21,7 +21,7 @@ export interface BeerMashTemp extends BeerTemp {
   duration: number;
 }
 
-export interface BeerMethod {
+export interface BeerResponseMethod {
   fermentation: BeerTemp;
   twist: string;
   mash_temp: BeerMashTemp[];
@@ -59,5 +59,5 @@ export interface BeerResponse {
   food_pairing: string[];
   brewers_tips: string;
   contributed_by: string;
-  method: BeerMethod;
+  method: BeerResponseMethod;
 }

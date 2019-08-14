@@ -13,5 +13,8 @@ export const rules = {
 export const permissions = shield({
   Query: {
     viewer: rules.isAuthenticatedUser
+  },
+  Mutation: {
+    createReview: rules.isAuthenticatedUser
   }
 });

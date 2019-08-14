@@ -22,7 +22,7 @@ model User {
 model Review {
   id      String @default(cuid()) @id @unique
   userId  String
-  beerId  Int
+  beerId  String
   comment String
   rating  Float
 }

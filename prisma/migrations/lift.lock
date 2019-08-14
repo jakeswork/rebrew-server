@@ -6,3 +6,7 @@
 20190812112055-init
 20190812120039-added-password--deleted-posts
 20190812160103-rename-user-model
+20190814120112-added-review-model
+20190814125716-int-beer-id
+20190814152912-string-id
+20190814155609-number

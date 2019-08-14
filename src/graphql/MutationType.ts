@@ -1,8 +1,8 @@
 import { compare, hash } from "bcrypt";
 import { sign } from "jsonwebtoken";
-import { mutationType, stringArg } from "nexus";
+import { mutationType, stringArg, floatArg, intArg } from "nexus";
 
-import { notExistError } from "../utils";
+import { notExistError, getUserId } from "../utils";
 
 const SALT_METHOD = process.env.SALT_METHOD;
 
@@ -68,6 +68,31 @@ const Mutation = mutationType({
           token: sign({ userId: user.id }, SALT_METHOD),
           user
         };
+      }
+    });
+
+    t.field("createReview", {
+      type: "Review",
+      args: {
+        beerId: intArg({ required: true }),
+        comment: stringArg({ required: true }),
+        rating: floatArg({ required: true })
+      },
+      resolve: async (_, { beerId, comment, rating }, ctx) => {
+        if (rating < 0 || rating > 5)
+          throw new Error("Ratings must be between 1-5");
+
+        const userId: string = getUserId(ctx);
+        const review = await ctx.photon.reviews.create({
+          data: {
+            beerId,
+            comment,
+            rating,
+            userId
+          }
+        });
+
+        return review;
       }
     });
   }
