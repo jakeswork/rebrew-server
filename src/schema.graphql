@@ -43,8 +43,16 @@ type BeerMashTemp implements BeerTemp {
   temp: Amount!
 }
 
+input BeersWhereInput {
+  name: String
+}
+
 interface BeerTemp {
   temp: Amount!
+}
+
+input BeerWhereInput {
+  id: Int!
 }
 
 type HopsIngredient implements Ingredient {
@@ -77,9 +85,9 @@ type Mutation {
 }
 
 type Query {
-  beer(id: Int!): Beer!
-  beers(name: String): [Beer!]!
-  user(id: ID, user_name: String): User!
+  beer(where: BeerWhereInput!): Beer!
+  beers(where: BeersWhereInput): [Beer!]!
+  user(where: UserWhereInput!): User!
 
   """The currently authenticated user"""
   viewer: User!
@@ -108,4 +116,9 @@ type User {
   id: ID!
   reviews_made: [Review!]
   user_name: String!
+}
+
+input UserWhereInput {
+  id: ID
+  user_name: String
 }

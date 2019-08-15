@@ -1,4 +1,4 @@
-import { queryType, idArg, intArg, stringArg } from "nexus";
+import { queryType, arg, intArg, stringArg } from "nexus";
 
 import { getUserId } from "../utils";
 
@@ -21,14 +21,12 @@ const Query = queryType({
     t.field("user", {
       type: "User",
       args: {
-        id: idArg({
-          nullable: true
-        }),
-        user_name: stringArg({
-          nullable: true
+        where: arg({
+          type: "UserWhereInput",
+          required: true
         })
       },
-      resolve: (_, where, ctx) => {
+      resolve: (_, { where }, ctx) => {
         return ctx.photon.users.findOne({
           where
         });
@@ -38,26 +36,28 @@ const Query = queryType({
     t.field("beer", {
       type: "Beer",
       args: {
-        id: intArg({
+        where: arg({
+          type: "BeerWhereInput",
           required: true
         })
       },
-      resolve: (_, { id }, ctx) => {
-        if (!id) throw new Error("Provide an id to search for.");
+      resolve: (_, { where }, ctx) => {
+        if (!where && !where.id)
+          throw new Error("Provide an id to search for.");
 
-        return ctx.beer.findBeerById(id);
+        return ctx.beer.findBeerById(where.id);
       }
     });
 
     t.list.field("beers", {
       type: "Beer",
       args: {
-        name: stringArg({
-          nullable: true
+        where: arg({
+          type: "BeersWhereInput"
         })
       },
-      resolve: (_, { name }, ctx) => {
-        if (name) return ctx.beer.findBeersByName(name);
+      resolve: (_, { where }, ctx) => {
+        if (where && where.name) return ctx.beer.findBeersByName(where.name);
 
         return ctx.beer.findBeers();
       }
