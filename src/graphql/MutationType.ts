@@ -12,8 +12,8 @@ const Mutation = mutationType({
       type: "AuthPayload",
       args: {
         display_name: stringArg({ nullable: true }),
-        user_name: stringArg(),
-        password: stringArg()
+        user_name: stringArg({ required: true }),
+        password: stringArg({ required: true })
       },
       resolve: async (_, { display_name, user_name, password }, ctx) => {
         const trimmed = user_name.replace(/\s/g, "");
@@ -50,8 +50,8 @@ const Mutation = mutationType({
     t.field("login", {
       type: "AuthPayload",
       args: {
-        user_name: stringArg(),
-        password: stringArg()
+        user_name: stringArg({ required: true }),
+        password: stringArg({ required: true })
       },
       resolve: async (_, { user_name, password }, ctx) => {
         const user = await ctx.photon.users.findOne({

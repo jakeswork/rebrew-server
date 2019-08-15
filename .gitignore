@@ -5,3 +5,4 @@ generated
 .DS_store
 *.log
 dist
+.env
