@@ -80,8 +80,8 @@ type Method {
 
 type Mutation {
   create_review(beer_id: Int!, comment: String!, rating: Float!): Review!
-  login(password: String, user_name: String): AuthPayload!
-  signup(display_name: String, password: String, user_name: String): AuthPayload!
+  login(password: String!, user_name: String!): AuthPayload!
+  signup(display_name: String, password: String!, user_name: String!): AuthPayload!
 }
 
 type Query {

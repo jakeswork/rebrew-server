@@ -6,7 +6,7 @@
     "build": "prisma2 generate && tsc",
     "postinstall": "prisma2 generate && tsc",
     "lint": "eslint /src --quiet && echo '✔ All good!'",
-    "deploy": "now --dotenv .env"
+    "deploy": "now"
   },
   "engines": {
     "node": "10.x"

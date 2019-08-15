@@ -9,6 +9,16 @@
       "maxLambdaSize": "25mb"
     }
   }],
+  "build": {
+    "env": {
+      "SALT_METHOD": "@salt_method",
+      "POSTGRESQL_URL": "@postgresql_url"
+    }
+  },
+  "env": {
+    "SALT_METHOD": "@salt_method",
+    "POSTGRESQL_URL": "@postgresql_url"
+  },
   "routes": [{
     "src": "/",
     "dest": "dist/src/"
