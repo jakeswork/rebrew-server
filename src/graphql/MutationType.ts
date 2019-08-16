@@ -54,20 +54,22 @@ const Mutation = mutationType({
         password: stringArg({ required: true })
       },
       resolve: async (_, { user_name, password }, ctx) => {
-        const user = await ctx.photon.users.findOne({
-          where: { user_name }
-        });
+        try {
+          const user = await ctx.photon.users.findOne({
+            where: { user_name }
+          });
 
-        if (!user) throw new Error(`No user found for user name ${user_name}`);
+          const passwordValid = await compare(password, user.password);
 
-        const passwordValid = await compare(password, user.password);
+          if (!passwordValid) throw new Error("Invalid password");
 
-        if (!passwordValid) throw new Error("Invalid password");
-
-        return {
-          token: sign({ userId: user.id }, SALT_METHOD),
-          user
-        };
+          return {
+            token: sign({ userId: user.id }, SALT_METHOD),
+            user
+          };
+        } catch (notExistError) {
+          throw new Error(`${user_name} does not exist.`);
+        }
       }
     });
 
