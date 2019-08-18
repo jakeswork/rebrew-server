@@ -23,13 +23,19 @@ const Mutation = mutationType({
           })
           .catch(notExistError);
 
-        if (userNameExists)
-          throw new Error(`Username ${trimmed} is already taken.`);
+        if (userNameExists) {
+          await ctx.photon.disconnect();
 
-        if (!password.match(/^(?=.*\d).{4,12}$/))
+          throw new Error(`Username ${trimmed} is already taken.`);
+        }
+
+        if (!password.match(/^(?=.*\d).{4,12}$/)) {
+          await ctx.photon.disconnect();
+
           throw new Error(
             "Password must be between 4 and 12 digits long and include at least one numeric digit."
           );
+        }
 
         const hashedPassword = await hash(password, 10);
         const user = await ctx.photon.users.create({
@@ -39,6 +45,8 @@ const Mutation = mutationType({
             password: hashedPassword
           }
         });
+
+        await ctx.photon.disconnect();
 
         return {
           token: sign({ userId: user.id }, SALT_METHOD),
@@ -58,6 +66,8 @@ const Mutation = mutationType({
           const user = await ctx.photon.users.findOne({
             where: { user_name }
           });
+
+          await ctx.photon.disconnect();
 
           const passwordValid = await compare(password, user.password);
 
@@ -93,6 +103,8 @@ const Mutation = mutationType({
             user_id
           }
         });
+
+        await ctx.photon.disconnect();
 
         return review;
       }

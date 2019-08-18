@@ -7,14 +7,17 @@ const Query = queryType({
     t.field("viewer", {
       type: "User",
       description: "The currently authenticated user",
-      resolve: (a, b, ctx) => {
+      resolve: async (a, b, ctx) => {
         const user_id = getUserId(ctx);
-
-        return ctx.photon.users.findOne({
+        const user = await ctx.photon.users.findOne({
           where: {
             id: user_id
           }
         });
+
+        await ctx.photon.disconnect();
+
+        return user;
       }
     });
 
@@ -26,10 +29,14 @@ const Query = queryType({
           required: true
         })
       },
-      resolve: (_, { where }, ctx) => {
-        return ctx.photon.users.findOne({
+      resolve: async (_, { where }, ctx) => {
+        const user = await ctx.photon.users.findOne({
           where
         });
+
+        await ctx.photon.disconnect();
+
+        return user;
       }
     });
 
